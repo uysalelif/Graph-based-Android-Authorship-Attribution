@@ -102,11 +102,13 @@ export AA_DATA_ROOT=/path/to/your/data
 
 This code is released under the MIT License (see `LICENSE`). The AppAuth-based
 scripts in `feature_extraction/graph_features/` are adapted from AppAuth
-(https://github.com/buptkick/AppAuth); the AppAuth, LiteRadar / LibRadar and
-`dex_parser.py` code needed to run them is not included and keeps its own terms.
-The source code-based, permission and library features follow Aydogan and Sen (2024);
-their library and permission lists are taken from
-https://github.com/emreaydogan/SourceCodeBasedAAA and are not included here.
+(https://github.com/buptkick/AppAuth); the MIT License covers only the
+modifications made in these two scripts, and the original AppAuth code, as well
+as the AppAuth, LiteRadar / LibRadar and `dex_parser.py` code needed to run them
+(not included), keeps its own terms. The source code-based, permission and
+library features follow Aydogan and Sen (2024); their library and permission
+lists are taken from https://github.com/emreaydogan/SourceCodeBasedAAA and are
+not included here.
 
 ## Citation
 
