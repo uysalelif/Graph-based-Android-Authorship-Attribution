@@ -4,8 +4,8 @@ WL Kernel - obfuscation
 train=ORIGINAL, test=ORIGINAL
 
 RUN
-  python obfuscation_WL_original_baseline.py genome
-  python obfuscation_WL_original_baseline.py malware
+  python obfuscation_wl_original_baseline.py genome
+  python obfuscation_wl_original_baseline.py malware
 """
 import os as _os  # repo: paths come from environment variables (see README)
 SCRATCH_ROOT = _os.environ.get("AA_SCRATCH_ROOT", "data")
