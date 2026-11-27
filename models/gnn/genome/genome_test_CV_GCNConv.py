@@ -108,7 +108,7 @@ class GNN(torch.nn.Module):
 # skf.get_n_splits(X, y)
 # print(f"skf: {skf}")
 
-with open("genome_fold_indices.pkl", "rb") as f:
+with open(f"genome_fold_indices_seed{seed}.pkl", "rb") as f:
     fold_indices = pickle.load(f)
 
 start_index = 1

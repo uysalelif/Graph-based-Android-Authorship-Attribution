@@ -27,10 +27,10 @@ for SEED in $SEEDS; do
       python "$REPO/models/gnn/genome/genome_test_${M}Conv_NodeFeatures_CV.py" "$SEED"
     done
   elif [ "$DS" = "malware" ]; then
-    python "$REPO/data/scripts/save_fold_indices.py" "$SEED"
+    python "$REPO/data/scripts/malware_save_fold_indices.py" "$SEED"
     for M in GAT GCN GIN Sage; do
-      python "$REPO/models/gnn/malware/test_CV_${M}Conv.py" "$SEED"
-      python "$REPO/models/gnn/malware/test_${M}Conv_NodeFeatures_CV.py" "$SEED"
+      python "$REPO/models/gnn/malware/malware_test_CV_${M}Conv.py" "$SEED"
+      python "$REPO/models/gnn/malware/malware_test_${M}Conv_NodeFeatures_CV.py" "$SEED"
     done
   else
     echo "dataset must be genome or malware"; exit 1
