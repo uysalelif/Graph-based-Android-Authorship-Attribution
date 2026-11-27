@@ -18,21 +18,10 @@ features, and with a structure-only Weisfeiler–Lehman (WL) graph kernel.
 | `feature_extraction/graph_features/` | Source code-based, permission and library features; AppAuth (external code, see its README) | 
 | `feature_extraction/motifs/` | 3-node motif features |
 | `feature_extraction/cfg/` | Control flow graph extraction and statistics | 
-| `feature_extraction/node_features_additional/` | 129 additional node-level features | 
 | `models/gnn/` | GCN, GraphSAGE, GIN, GAT (NF only and NF + GF), 10-fold CV | 
-| `models/ml/` | RF, XGBoost, LR, SVM, MLP; post-pool scaling; motif-free RF |
+| `models/ml/` | RF, XGBoost, LR, SVM, MLP|
 | `models/wl_kernel/` | WL graph kernel + SVM | 
-| `analyses/data_quality/` | Duplicates (MD5, method sets), twin / near-twin groups, Jaccard | 
-| `analyses/graph_content_pruning/` | Graph health, node categories, name- and clustering-based pruning | 
-| `analyses/difference_analysis/` | DELTA / COMMON analysis | 
-| `analyses/motifs/` | Motif frequency, discriminative power, motif-only models | 
-| `analyses/cfg_comparison/` | GNN, ML and WL experiments on CFGs | 
-| `analyses/application_level/` | ID-tracked runs, prediction logs, McNemar, cross-author twins, easy/hard applications, author-level figures | 
 | `analyses/obfuscation/` | Obfuscation with Obfuscapk, Orig→Obf and Obf→Obf experiments | 
-| `analyses/feature_selection/` | PCA, graph-level and node-level feature selection |
-| `analyses/additional_node_features/` | Experiments with the additional node-level features; IDF feature computed within each fold | 
-| `analyses/hyperparameter_tuning/` | Nested 10-fold CV for GNN and RF | 
-| `analyses/computational_cost/` | End-to-end cost benchmarks | 
 
 ## Setup
 
@@ -68,7 +57,6 @@ The following scripts were run on TRUBA with Python 3.9.16 and the package
 versions in `requirements-truba.txt` (PyTorch 2.2.2 with CUDA 11.8, PyTorch
 Geometric 2.6.1):
 
-- `analyses/hyperparameter_tuning/` (nested cross-validation)
 - `analyses/obfuscation/` (Orig→Obf, Obf→Obf)
 
 All other scripts were run in the main environment described above.
@@ -99,8 +87,6 @@ export AA_DATA_ROOT=/path/to/your/data
    (`feature_extraction/motifs/`), and save them as `.pt` files.
 3. Create the fold files with `data/scripts/` (one seed at a time; see below).
 4. Run the main experiments in `models/`.
-5. For the application-level analyses, first produce the ID-tracked prediction
-   logs (`analyses/application_level/`), then run the analysis scripts.
 
 The main results are averages over seeds 34, 61 and 70. The main GNN scripts
 and the fold scripts take the seed as an argument (`python script.py 61`;
@@ -114,11 +100,6 @@ bash models/gnn/run_all_seeds.sh malware
 
 ## Notes
 
-- Some file names, environment variables and comments refer to the analyses by number
-  (e.g. `madde7_...`, `M10_...`, "madde 7"): 3 application-level analysis, 6 CFG,
-  7 data quality / difference analysis, 8 easy and hard applications, 9 motifs,
-  10 additional node features, 11 feature selection, 12 graph content, 13 computational cost,
-  16 pruning, 17 hyperparameter tuning, 18 obfuscation.
 - APK files are not distributed (see `data/README.md`).
 
 ## License
