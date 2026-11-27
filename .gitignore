@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.idea/
+.vscode/
+
+# data and results
+*.apk
+*.pt
+*.pkl
+*.csv
+*.log
+*_results/
+results/
+outputs/
