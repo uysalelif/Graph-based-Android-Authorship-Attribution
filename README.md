@@ -85,16 +85,15 @@ export AA_DATA_ROOT=/path/to/your/data
    graph-level features (`feature_extraction/graph_features/`) and motifs
    (`feature_extraction/motifs/`), and save them as `.pt` files.
 3. Create the fold files with `data/scripts/`.
-4. Run the main experiments in `models/`.
+4. Run the main experiments:
 
-The main results are averages over seeds 34, 61 and 70. 
-`models/gnn/run_all_seeds.sh` creates the folds and runs all main
-GNN experiments for the three seeds:
+   ```bash
+   bash run_experiments.sh genome            # GNN, ML and WL
+   bash run_experiments.sh malware gnn       # only the GNN experiments
+   ```
 
-```bash
-bash models/gnn/run_all_seeds.sh genome
-bash models/gnn/run_all_seeds.sh malware
-```
+The fold files for seeds 34, 61 and 70 are created first; the main results
+   are averages over these three seeds.
 
 ## Notes
 
