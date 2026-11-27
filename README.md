@@ -1,71 +1,155 @@
 # Graph-based Android Authorship Attribution
 
-Graph-based Android authorship attribution using call graphs, multi-level (node-level and graph-level) feature representation, and Graph Neural Networks (GNNs).
 
-This repository contains the code accompanying for identifying the author(s) of Android applications from their call-graph structure and code-derived features, using both GNN-based classifiers and classical machine learning baselines.
+Android applications are represented as call graphs (and, as an alternative,
+control flow graphs). Node-level features (opcode, structural and centrality
+features) and graph-level features (AppAuth, source code-based, permission and
+library features, 3-node motifs) are extracted, and four GNN architectures
+(GCN, GraphSAGE, GIN, GAT) are compared with conventional machine learning
+models (Random Forest, XGBoost, Logistic Regression, SVM, MLP) using the same
+features, and with a structure-only Weisfeiler–Lehman (WL) graph kernel.
 
-## Overview
+## Repository layout
 
-Android applications are represented as **call graphs**, from which we extract:
+| Folder | Content  |
+|---|---|
+| `data/` | How to obtain the datasets; fold generation scripts | 
+| `feature_extraction/call_graph/` | Call graph and node-level feature extraction with Androguard | 
+| `feature_extraction/graph_features/` | Source code-based, permission and library features; AppAuth (external code, see its README) | 
+| `feature_extraction/motifs/` | 3-node motif features |
+| `feature_extraction/cfg/` | Control flow graph extraction and statistics | 
+| `feature_extraction/node_features_additional/` | 129 additional node-level features | 
+| `models/gnn/` | GCN, GraphSAGE, GIN, GAT (NF only and NF + GF), 10-fold CV | 
+| `models/ml/` | RF, XGBoost, LR, SVM, MLP; post-pool scaling; motif-free RF |
+| `models/wl_kernel/` | WL graph kernel + SVM | 
+| `analyses/data_quality/` | Duplicates (MD5, method sets), twin / near-twin groups, Jaccard | 
+| `analyses/graph_content_pruning/` | Graph health, node categories, name- and clustering-based pruning | 
+| `analyses/difference_analysis/` | DELTA / COMMON analysis | 
+| `analyses/motifs/` | Motif frequency, discriminative power, motif-only models | 
+| `analyses/cfg_comparison/` | GNN, ML and WL experiments on CFGs | 
+| `analyses/application_level/` | ID-tracked runs, prediction logs, McNemar, cross-author twins, easy/hard applications, author-level figures | 
+| `analyses/obfuscation/` | Obfuscation with Obfuscapk, Orig→Obf and Obf→Obf experiments | 
+| `analyses/feature_selection/` | PCA, graph-level and node-level feature selection |
+| `analyses/additional_node_features/` | Experiments with the additional node-level features; IDF feature computed within each fold | 
+| `analyses/hyperparameter_tuning/` | Nested 10-fold CV for GNN and RF | 
+| `analyses/computational_cost/` | End-to-end cost benchmarks | 
 
-- **Node-level features**: structure-based, opcode-based, and method-type-based
-- **Graph-level features**: handcrafted (independent of the graph) and motif-based (graph-dependent)
+## Setup
 
-These representations are used to train and evaluate:
+The main experiments were run with Python 3.6.8. The versions in
+`requirements.txt` are those of this main environment (for the scripts run on
+TRUBA, see *TRUBA environment* below).
 
-- **GNN models**: GraphSAGE, GIN, GCN, GAT
-- **Classical ML baselines**: Random Forest, SVM, Logistic Regression, XGBoost, 
-- **Graph kernel baseline**: Weisfeiler-Lehman (WL) graph kernel + SVM
+1. Install PyTorch 1.10.1 for your CUDA version (the experiments used CUDA 11.1),
+   following https://pytorch.org/get-started/previous-versions/ , e.g.
 
-The repository also includes an **obfuscation robustness analysis**, evaluating how different obfuscation techniques affect call-graph structure and classification performance.
+   ```bash
+   pip install torch==1.10.1+cu111 -f https://download.pytorch.org/whl/cu111/torch_stable.html
+   ```
 
-## Repository Structure
+2. Install PyTorch Geometric 2.0.3 and its extensions (torch-scatter 2.0.9,
+   torch-sparse 0.6.12, torch-cluster 1.5.9, torch-spline-conv 1.2.1) for this
+   PyTorch / CUDA version, following
+   https://pytorch-geometric.readthedocs.io/en/2.0.3/notes/installation.html
 
-```
-.
-├── data/               # Raw and processed datasets (call graphs, extracted features)
-├── extraction/         # Call graph extraction and feature extraction scripts
-├── models/             # GNN model architectures (GraphSAGE, GIN, GCN, GAT)
-├── baselines/          # Classical ML baselines (RF, SVM, LR, XGBoost, WL kernel)
-├── obfuscation/        # Obfuscation analysis scripts and results
-├── utils/              # Shared utilities (data loading, evaluation, etc.)
-└── README.md
-```
+3. Install the remaining packages (the PyTorch and PyG entries in
+   `requirements.txt` are then already satisfied):
 
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Installation
+The original experiments were run on a Linux server (GPU: Quadro GV100) and
+on the TRUBA HPC cluster (`*.sh` files are SLURM job scripts).
+
+### TRUBA environment
+
+The following scripts were run on TRUBA with Python 3.9.16 and the package
+versions in `requirements-truba.txt` (PyTorch 2.2.2 with CUDA 11.8, PyTorch
+Geometric 2.6.1):
+
+- `analyses/hyperparameter_tuning/` (nested cross-validation)
+- `analyses/obfuscation/` (Orig→Obf, Obf→Obf)
+
+All other scripts were run in the main environment described above.
+
+### Paths
+
+The scripts originally used absolute paths on the authors' machines. These
+have been replaced by three environment variables; the folder structure below
+them is the same as in the original setup (for example
+`$AA_DATA_ROOT/SAVUNMA_SON/{dataset}_AppAuth_SPL_Motif_node_features_ALL.pt`).
+
+| Variable | Default | Used for |
+|---|---|---|
+| `AA_DATA_ROOT` | `data` | Main data and result folders (server) |
+| `AA_SCRATCH_ROOT` | `data` | Data and results of the TRUBA runs |
+| `AA_HOME_ROOT` | `data` | Conda environment on TRUBA (`*.sh`) |
+| `AA_LOCAL_ROOT` | `data` | A few local (Windows) paths |
 
 ```bash
-git clone https://github.com/<your-username>/Graph-based-Android-Authorship-Attribution.git
-cd Graph-based-Android-Authorship-Attribution
-pip install -r requirements.txt
+export AA_DATA_ROOT=/path/to/your/data
 ```
 
-## Usage
+## Typical order
+
+1. Obtain the datasets (`data/README.md`).
+2. Extract call graphs and node-level features (`feature_extraction/call_graph/`),
+   graph-level features (`feature_extraction/graph_features/`) and motifs
+   (`feature_extraction/motifs/`), and save them as `.pt` files.
+3. Create the fold files with `data/scripts/` (one seed at a time; see below).
+4. Run the main experiments in `models/`.
+5. For the application-level analyses, first produce the ID-tracked prediction
+   logs (`analyses/application_level/`), then run the analysis scripts.
+
+The main results are averages over seeds 34, 61 and 70. The main GNN scripts
+and the fold scripts take the seed as an argument (`python script.py 61`;
+default 34). `models/gnn/run_all_seeds.sh` creates the folds and runs all main
+GNN experiments for the three seeds:
 
 ```bash
-# Example: extract call graphs and features
-python3 extraction/extract_call_graphs.py
-
-# Example: train a GNN model
-python3 models/train_gnn.py
-
-# Example: run a classical ML baseline
-python3 baselines/train_rf.py 
+bash models/gnn/run_all_seeds.sh genome
+bash models/gnn/run_all_seeds.sh malware
 ```
 
+## Notes
+
+- Some file names, environment variables and comments refer to the analyses by number
+  (e.g. `madde7_...`, `M10_...`, "madde 7"): 3 application-level analysis, 6 CFG,
+  7 data quality / difference analysis, 8 easy and hard applications, 9 motifs,
+  10 additional node features, 11 feature selection, 12 graph content, 13 computational cost,
+  16 pruning, 17 hyperparameter tuning, 18 obfuscation.
+- APK files are not distributed (see `data/README.md`).
+
+## License
+
+This code is released under the MIT License (see `LICENSE`). The AppAuth-based
+scripts in `feature_extraction/graph_features/` are adapted from AppAuth
+(https://github.com/buptkick/AppAuth); the AppAuth, LiteRadar / LibRadar and
+`dex_parser.py` code needed to run them is not included and keeps its own terms.
+The source code-based, permission and library features follow Aydogan and Sen (2024);
+their library and permission lists are taken from
+https://github.com/emreaydogan/SourceCodeBasedAAA and are not included here.
 
 ## Citation
 
-If you use this code in your research, please cite:
+If you use this code, please cite:
+
+> E. Uysal and S. Sen, "Graph-Based Learning for Android Authorship Attribution:
+> A Comparative Analysis of GNN Models," *Applied Sciences*, vol. 16, no. 17,
+> p. 8759, 2026. doi: [10.3390/app16178759](https://doi.org/10.3390/app16178759)
+
 
 ```bibtex
-@article{your_citation_key,
-  title   = {Your Paper Title},
-  author  = {Your Name and Co-authors},
+@article{uysal2026graph,
+  author  = {Uysal, Elif and Sen, Sevil},
+  title   = {Graph-Based Learning for Android Authorship Attribution: A Comparative Analysis of GNN Models},
   journal = {Applied Sciences},
+  volume  = {16},
+  number  = {17},
+  pages   = {8759},
   year    = {2026},
-  doi     = {your-doi-here}
+  doi     = {10.3390/app16178759}
 }
-```
 
+```
