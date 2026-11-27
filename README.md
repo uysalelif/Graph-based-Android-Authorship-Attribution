@@ -78,7 +78,7 @@ All other scripts were run in the main environment described above.
 The scripts originally used absolute paths on the authors' machines. These
 have been replaced by three environment variables; the folder structure below
 them is the same as in the original setup (for example
-`$AA_DATA_ROOT/SAVUNMA_SON/{dataset}_AppAuth_SPL_Motif_node_features_ALL.pt`).
+`$AA_DATA_ROOT/{dataset}_AppAuth_SPL_Motif_node_features_ALL.pt`).
 
 | Variable | Default | Used for |
 |---|---|---|
