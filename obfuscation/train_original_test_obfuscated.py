@@ -27,7 +27,7 @@ start_time = time.time()
 dataset_type = "malware"  # malware or genome
 technique = "ClassRename"
 
-INTERSECTION_JSON = f"{SCRATCH_ROOT}/mytest/obfuscation_tests/intersection_apk_ids.json"  # 6 tekniğin aday listesi (gercek yolunu koy)
+INTERSECTION_JSON = f"{SCRATCH_ROOT}/mytest/obfuscation_tests/intersection_apk_ids.json"
 ORIGINAL_PT_FILE = f"{SCRATCH_ROOT}/mytest/obfuscation_tests/{dataset_type}_original_node_only.pt"
 TECHNIQUE_PT_FILE = f"{SCRATCH_ROOT}/mytest/obfuscation_tests/{dataset_type}_{technique}_node_only.pt"
 

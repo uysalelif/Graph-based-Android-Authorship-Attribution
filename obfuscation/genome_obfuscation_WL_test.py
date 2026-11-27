@@ -52,7 +52,7 @@ class AndroidGraphDataset(Dataset):
         return data
 
 
-INTERSECTION_JSON = f"{SCRATCH_ROOT}/mytest/obfuscation_tests/GENOME/genome_intersection_apk_ids.json"  # 6 tekniğin aday listesi (gercek yolunu koy)
+INTERSECTION_JSON = f"{SCRATCH_ROOT}/mytest/obfuscation_tests/GENOME/genome_intersection_apk_ids.json"
 ORIGINAL_PT_FILE = f"{SCRATCH_ROOT}/mytest/obfuscation_tests/GENOME/{dataset_type}_original_node_only.pt"
 
 
