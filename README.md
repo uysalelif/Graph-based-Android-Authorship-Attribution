@@ -57,7 +57,7 @@ The following scripts were run on TRUBA with Python 3.9.16 and the package
 versions in `requirements-truba.txt` (PyTorch 2.2.2 with CUDA 11.8, PyTorch
 Geometric 2.6.1):
 
-- `obfuscation/` (Orig→Obf, Obf→Obf)
+- `obfuscation/` (Orig→Obf, Obf→Obf) for testing
 
 All other scripts were run in the main environment described above.
 
