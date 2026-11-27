@@ -84,12 +84,11 @@ export AA_DATA_ROOT=/path/to/your/data
 2. Extract call graphs and node-level features (`feature_extraction/call_graph/`),
    graph-level features (`feature_extraction/graph_features/`) and motifs
    (`feature_extraction/motifs/`), and save them as `.pt` files.
-3. Create the fold files with `data/scripts/` (one seed at a time; see below).
+3. Create the fold files with `data/scripts/`.
 4. Run the main experiments in `models/`.
 
-The main results are averages over seeds 34, 61 and 70. The main GNN scripts
-and the fold scripts take the seed as an argument (`python script.py 61`;
-default 34). `models/gnn/run_all_seeds.sh` creates the folds and runs all main
+The main results are averages over seeds 34, 61 and 70. 
+`models/gnn/run_all_seeds.sh` creates the folds and runs all main
 GNN experiments for the three seeds:
 
 ```bash
