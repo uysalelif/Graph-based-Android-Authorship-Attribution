@@ -72,7 +72,6 @@ them is the same as in the original setup (for example
 |---|---|---|
 | `AA_DATA_ROOT` | `data` | Main data and result folders (server) |
 | `AA_SCRATCH_ROOT` | `data` | Data and results of the TRUBA runs |
-| `AA_HOME_ROOT` | `data` | Conda environment on TRUBA (`*.sh`) |
 | `AA_LOCAL_ROOT` | `data` | A few local (Windows) paths |
 
 ```bash

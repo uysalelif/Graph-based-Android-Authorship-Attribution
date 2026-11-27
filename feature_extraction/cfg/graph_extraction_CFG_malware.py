@@ -40,7 +40,7 @@ with open(LIBRARY_LIST_PATH) as f:
 FRAMEWORK_PREFIXES = ["Landroid/", "Landroidx/", "Ljava/", "Ljavax/", "Lkotlin/", "Lkotlinx/",
                       "Ldalvik/", "Lsun/", "Lorg/apache/", "Lorg/json/", "Lorg/intellij/",
                       "Lorg/jetbrains/"]
-# bilinen kütüphane aileleri de developer sayılmasın
+
 LIBRARY_FAMILIES = ["Lcom/google", "Lokhttp3", "Lokio", "Lretrofit2", "Lcom/squareup",
                     "Lcom/bumptech", "Lcom/facebook", "Lio/reactivex", "Ldagger",
                     "Lorg/koin", "Lcom/airbnb"]

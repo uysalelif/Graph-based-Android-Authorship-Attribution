@@ -9,10 +9,10 @@ dataset = "malware" # genome
 
 if dataset == "malware":
     data_path = f"{DATA_ROOT}/TEST/malware/malware_data/"
-    output_base = f"{DATA_ROOT}/madde18/malware_obfuscation/"
+    output_base = f"{DATA_ROOT}/malware_obfuscation/"
 elif dataset == "genome":
     data_path = "<AA_DATA_ROOT>/TEST/Genome/"
-    output_base = f"{DATA_ROOT}/madde18/genome_obfuscation/"
+    output_base = f"{DATA_ROOT}/genome_obfuscation/"
 
 TECHNIQUES = ["ClassRename", "FieldRename", "MethodRename",
               "ConstStringEncryption", "LibEncryption",
